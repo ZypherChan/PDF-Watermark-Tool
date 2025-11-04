@@ -2,7 +2,7 @@
   <strong>English</strong> | <a href="README.md">中文</a>
 </h4>
 
-# PdfTool - PDF Watermark Processing Tool
+# PdfTool - PDF Watermark Tool
 
 ![Windows](https://img.shields.io/badge/Windows%2064--bit-10%2F11-blue?logo=windows)
 ![Qt](https://img.shields.io/badge/Qt-5.9.7%2B-green?logo=qt)
@@ -51,21 +51,6 @@ PdfTool is a PDF watermark processing tool based on Qt5 and PDFium, providing an
 - **CMake**: Cross-platform build system
 
 ### Project Structure
-
-PdfTool/
-├── CMakeLists.txt          # CMake build configuration
-├── main.cpp                # Application entry point
-├── PdfTool.cpp/h           # Main window implementation
-├── PdfTool.ui              # Qt Designer interface file
-├── WatermarkSetting.cpp/h  # Watermark settings dialog
-├── Thumbnail.cpp/h         # Thumbnail component
-├── DpiManager.cpp/h        # DPI management
-├── fonts/                  # Font files
-│   └── NotoSansCJKsc-Bold.ttf
-├── pdfium/                 # PDFium library files
-├── ttfsubset/              # Font subsetting code
-└── qss/                    # Qt stylesheets
-
 
 ## 🚀 Quick Start
 
