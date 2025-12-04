@@ -123,7 +123,7 @@ The program will automatically load the following configurations:
 
 ## 🎯 Features To Be Implemented
 
-- [ ] **Watermark color**: Select watermark color (default gray)
+- [x] ~~**Watermark color**: Select watermark color (default gray)~~
 - [ ] **Watermark position**: Precise control of watermark position (top-left, center, bottom-right, etc.)
 - [ ] **Image watermark**: Support for adding images as watermarks
 - [ ] **Font settings**: Support for user selection of watermark fonts
