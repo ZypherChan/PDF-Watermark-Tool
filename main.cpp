@@ -1,6 +1,7 @@
 #include "PdfTool.h"
 
 #include <QFile>
+#include <QDir>
 #include <QTranslator>
 #include <QtWidgets/QApplication>
 
@@ -18,9 +19,13 @@ int main(int argc, char* argv[])
         file.close();
     }
 
-    QTranslator translator;
-    translator.load(":/PdfTool_zh_CN.qm");
-    app.installTranslator(&translator);
+    QTranslator mainTranslator;
+    mainTranslator.load(":/PdfTool_zh_CN.qm");
+    app.installTranslator(&mainTranslator);
+    
+    QTranslator qtTranslator;
+    if(qtTranslator.load("qt_zh_CN.qm", QCoreApplication::applicationDirPath() + "/translations"))
+        app.installTranslator(&qtTranslator);
 
     QFont font("Microsoft YaHei", 9);
     app.setFont(font);

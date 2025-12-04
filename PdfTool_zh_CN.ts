@@ -116,6 +116,17 @@
     </message>
 </context>
 <context>
+    <name>WatermarkSetting</name>
+    <message>
+        <source>Select color</source>
+        <translation>选择颜色</translation>
+    </message>
+    <message>
+        <source>Select Watermark Color</source>
+        <translation>选择水印颜色</translation>
+    </message>
+</context>
+<context>
     <name>WatermarkSettingClass</name>
     <message>
         <source>Watermark Setting</source>
@@ -164,6 +175,10 @@
     <message>
         <source>Column Count:</source>
         <translation>平铺列数：</translation>
+    </message>
+    <message>
+        <source>Color:</source>
+        <translation>颜色：</translation>
     </message>
 </context>
 </TS>

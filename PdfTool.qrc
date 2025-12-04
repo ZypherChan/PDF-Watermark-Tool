@@ -20,5 +20,6 @@
         <file>qss/silvery/radiobutton_unchecked.png</file>
         <file>qss/silvery/radiobutton_unchecked_disable.png</file>
         <file>PdfTool_zh_CN.qm</file>
+        <file>color_pick.png</file>
     </qresource>
 </RCC>

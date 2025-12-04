@@ -1,6 +1,8 @@
 #include "WatermarkSetting.h"
 #include "DpiManager.h"
 
+#include <QColorDialog>
+
 WatermarkSetting::WatermarkSetting(const WaterMarkInfo& watermarkInfo, QWidget* parent /*= Q_NULLPTR*/)
     : QWidget(parent), ui(new Ui::WatermarkSettingClass()), m_watermarkInfo(watermarkInfo)
 {
@@ -15,7 +17,32 @@ WatermarkSetting::WatermarkSetting(const WaterMarkInfo& watermarkInfo, QWidget* 
     ui->doubleSpinBox_opacity->setValue(m_watermarkInfo.opacity);
     ui->spinBox_rowCount->setValue(m_watermarkInfo.repeatRows);
     ui->spinBox_colCount->setValue(m_watermarkInfo.repeatCols);
+    QString rgbText = QString("(%1, %2, %3)")
+                         .arg(m_watermarkInfo.color.red())
+                         .arg(m_watermarkInfo.color.green())
+                          .arg(m_watermarkInfo.color.blue());
+    ui->lineEdit_color->setText(rgbText);
+    ui->lineEdit_color->setProperty("wm_color", m_watermarkInfo.color);
+    ui->lineEdit_color->setStyleSheet(QString("QLineEdit { background-color : rgb%1; }").arg(rgbText));
 
+    QAction* action = new QAction(QIcon(":/color_pick.png"), tr("Select color"));
+    ui->lineEdit_color->addAction(action, QLineEdit::TrailingPosition);
+    connect(action, &QAction::triggered, this, [this]() {
+        QColor color = QColorDialog::getColor(m_watermarkInfo.color, this, tr("Select Watermark Color"));
+        if(color.isValid())
+        {
+            m_watermarkInfo.color = color;
+            QString rgbText = QString("(%1, %2, %3)")
+                                  .arg(m_watermarkInfo.color.red())
+                                  .arg(m_watermarkInfo.color.green())
+                                  .arg(m_watermarkInfo.color.blue());
+            ui->lineEdit_color->setText(rgbText);
+            ui->lineEdit_color->setProperty("wm_color", m_watermarkInfo.color);
+            ui->lineEdit_color->setStyleSheet(
+                QString("QLineEdit { background-color : rgb%1; }").arg(rgbText));
+            updatePreview();
+        }
+    });
     connect(ui->btn_apply, &QPushButton::clicked, this, &WatermarkSetting::slotApply);
     connect(ui->btn_cancel, &QPushButton::clicked, this, [this]() {
         m_applied = false;
@@ -43,6 +70,7 @@ void WatermarkSetting::updatePreview()
     m_watermarkInfo.fontSize = ui->spinBox_fontSize->value();
     m_watermarkInfo.angle = ui->spinBox_angle->value();
     m_watermarkInfo.opacity = ui->doubleSpinBox_opacity->value();
+    m_watermarkInfo.color = ui->lineEdit_color->property("wm_color").value<QColor>();
     ui->widget_preview->setWatermarkInfo(m_watermarkInfo);
 
     if(m_applied) slotApply();
