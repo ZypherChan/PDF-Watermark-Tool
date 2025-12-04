@@ -102,9 +102,24 @@ find_program(WINDEPLOYQT_EXECUTABLE NAMES windeployqt windeployqt.exe
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${CMAKE_SOURCE_DIR}/translations"
+    "$<TARGET_FILE_DIR:${PROJECT_NAME}>/translations"
+    COMMENT "Copying translations directory to output directory"
+)
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
     "${CMAKE_SOURCE_DIR}/fonts"
     "$<TARGET_FILE_DIR:${PROJECT_NAME}>/fonts"
     COMMENT "Copying fonts directory to output directory"
+)
+
+add_custom_command(
+    TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+           "${CMAKE_SOURCE_DIR}/pdfium/bin/pdfium.dll"
+            "$<TARGET_FILE_DIR:${PROJECT_NAME}>/pdfium.dll"
+    COMMENT "Copying config.json after build"
 )
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
