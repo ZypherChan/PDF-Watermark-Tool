@@ -19,6 +19,8 @@
 
 #define DEFAULT_FONT "NotoSansCJKsc-Bold.ttf"
 
+bool geFontFilePathByQFont(const QFont& font, QString& fileName);
+
 struct FileWriteContext : public FPDF_FILEWRITE
 {
     std::ofstream* stream;
@@ -31,7 +33,8 @@ PdfTool::PdfTool(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow()
     init();
 
     QString fontPath = QDir(QApplication::applicationDirPath() + "/fonts").filePath(DEFAULT_FONT);
-    QFontDatabase::addApplicationFont(fontPath);
+    if(QFile::exists(fontPath))
+        QFontDatabase::addApplicationFont(fontPath);
 
     connect(ui->btn_pageup, &QPushButton::clicked, this, &PdfTool::slotPageUp);
     connect(ui->btn_pagedown, &QPushButton::clicked, this, &PdfTool::slotPageDown);
@@ -57,7 +60,7 @@ void PdfTool::init()
     m_watermarkInfo.angle = 45.0;
     m_watermarkInfo.fontSize = 20;
     m_watermarkInfo.opacity = 0.5;
-    m_watermarkInfo.family = "Noto Sans CJK SC";
+    m_watermarkInfo.family = "Microsoft YaHei";
     m_watermarkInfo.color = QColor(Qt::gray);
     m_watermarkInfo.text = QString::fromLocal8Bit("PDF - Ë®Ó¡¹¤¾ß");
     m_watermarkInfo.repeatRows = 4;
@@ -179,17 +182,20 @@ QImage PdfTool::addWatermarkPreview(const QImage& image, const QString& watermar
 bool PdfTool::addWatermark(FPDF_DOCUMENT doc)
 {
     if(m_watermarkInfo.text.isEmpty() || m_watermarkInfo.opacity < 1e-6) return true;
-    QString fontPath = QDir(QApplication::applicationDirPath() + "/fonts").filePath(DEFAULT_FONT);
+    QString fontPath;
     FPDF_FONT font = nullptr;
-    if(!QFile::exists(fontPath))
+    if(!geFontFilePathByQFont(QFont(m_watermarkInfo.family), fontPath))
     {
-        // Use standard font if custom font file not found
-        font = FPDFText_LoadStandardFont(doc, "Helvetica-Bold");
-        QMessageBox::information(this, tr("Add Watermark"), tr("Use standard font for watermark."));
+        fontPath = QDir(QApplication::applicationDirPath() + "/fonts").filePath(DEFAULT_FONT);
+        if(!QFile::exists(fontPath))
+        {  // Use standard font if custom font file not found
+            font = FPDFText_LoadStandardFont(doc, "Helvetica-Bold");
+        }
+        QMessageBox::information(this, tr("Add Watermark"), tr("Using the default font due to missing font file"));
     }
-    else
+    
+    if(!font && !fontPath.isEmpty())
     {
-
         std::string fontFilePath = fontPath.toLocal8Bit().constData();
         wchar_t* wcharArray = new wchar_t[m_watermarkInfo.text.size() + 1];
         int length = m_watermarkInfo.text.toWCharArray(wcharArray);

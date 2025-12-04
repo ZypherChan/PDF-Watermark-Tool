@@ -4,7 +4,6 @@
 #include "WatermarkInfo.h"
 
 #include <QWidget>
-#include "ui_WatermarkSetting.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

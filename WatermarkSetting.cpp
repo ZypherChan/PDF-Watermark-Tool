@@ -1,6 +1,8 @@
 #include "WatermarkSetting.h"
+#include "ui_WatermarkSetting.h"
 #include "DpiManager.h"
 
+#include <QFontDatabase>
 #include <QColorDialog>
 
 WatermarkSetting::WatermarkSetting(const WaterMarkInfo& watermarkInfo, QWidget* parent /*= Q_NULLPTR*/)
@@ -24,6 +26,8 @@ WatermarkSetting::WatermarkSetting(const WaterMarkInfo& watermarkInfo, QWidget* 
     ui->lineEdit_color->setText(rgbText);
     ui->lineEdit_color->setProperty("wm_color", m_watermarkInfo.color);
     ui->lineEdit_color->setStyleSheet(QString("QLineEdit { background-color : rgb%1; }").arg(rgbText));
+    ui->comboBox_font->addItems(QFontDatabase().families());
+    ui->comboBox_font->setCurrentText(m_watermarkInfo.family);
 
     QAction* action = new QAction(QIcon(":/color_pick.png"), tr("Select color"));
     ui->lineEdit_color->addAction(action, QLineEdit::TrailingPosition);
@@ -60,6 +64,7 @@ WatermarkSetting::WatermarkSetting(const WaterMarkInfo& watermarkInfo, QWidget* 
             &WatermarkSetting::updatePreview);
     connect(ui->spinBox_colCount, QOverload<int>::of(&QSpinBox::valueChanged), this,
             &WatermarkSetting::updatePreview);
+    connect(ui->comboBox_font, &QComboBox::currentTextChanged, this, &WatermarkSetting::updatePreview);
 
     updatePreview();
 }
@@ -71,6 +76,7 @@ void WatermarkSetting::updatePreview()
     m_watermarkInfo.angle = ui->spinBox_angle->value();
     m_watermarkInfo.opacity = ui->doubleSpinBox_opacity->value();
     m_watermarkInfo.color = ui->lineEdit_color->property("wm_color").value<QColor>();
+    m_watermarkInfo.family = ui->comboBox_font->currentText();
     ui->widget_preview->setWatermarkInfo(m_watermarkInfo);
 
     if(m_applied) slotApply();

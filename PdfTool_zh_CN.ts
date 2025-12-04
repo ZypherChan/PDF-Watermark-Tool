@@ -84,7 +84,7 @@
     </message>
     <message>
         <source>Use standard font for watermark.</source>
-        <translation>使用标准字体添加水印</translation>
+        <translation type="vanished">使用标准字体添加水印</translation>
     </message>
     <message>
         <source>PDF Watermark Tool - %1</source>
@@ -113,6 +113,10 @@
     <message>
         <source>Parse PDF...</source>
         <translation>正在解析PDF文件.....</translation>
+    </message>
+    <message>
+        <source>Using the default font due to missing font file</source>
+        <translation>由于字体缺失使用默认字体</translation>
     </message>
 </context>
 <context>
@@ -179,6 +183,10 @@
     <message>
         <source>Color:</source>
         <translation>颜色：</translation>
+    </message>
+    <message>
+        <source>Font:</source>
+        <translation>字体：</translation>
     </message>
 </context>
 </TS>
