@@ -300,7 +300,7 @@ void PdfTool::save(const QString& filePath)
 {
     if(m_doc)
     {
-        auto doc = FPDF_LoadDocument(m_pdfFilePath.toLocal8Bit().constData(), nullptr);
+        auto doc = FPDF_LoadDocument(m_pdfFilePath.toStdString().c_str(), nullptr);
         if(!doc)
         {
             QMessageBox::warning(this, tr("Save PDF"), tr("Failed to reload original PDF document."));
