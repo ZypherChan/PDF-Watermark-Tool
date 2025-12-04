@@ -25,7 +25,7 @@ PdfTool is a PDF watermark processing tool based on Qt5 and PDFium, providing an
 
 ### 💧 Watermark Features
 - **Text watermark**: Support for custom text content watermark addition
-- **Font settings**: Built-in Noto Sans CJK SC font, supporting Chinese display
+- **Font settings**: Support font setting and color setting
 - **Style customization**:
   - Adjustable font size
   - Transparency settings (0-1)
@@ -123,10 +123,8 @@ The program will automatically load the following configurations:
 
 ## 🎯 Features To Be Implemented
 
-- [x] ~~**Watermark color**: Select watermark color (default gray)~~
 - [ ] **Watermark position**: Precise control of watermark position (top-left, center, bottom-right, etc.)
 - [ ] **Image watermark**: Support for adding images as watermarks
-- [ ] **Font settings**: Support for user selection of watermark fonts
 
 ---
 💡 **Welcome to contribute**: If you have features you want to implement, feel free to submit Issues or Pull Requests!
