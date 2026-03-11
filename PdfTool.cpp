@@ -14,6 +14,10 @@
 #include <QMessageBox>
 #include <QFontDatabase>
 #include <QProgressDialog>
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QMimeData>
+#include <QUrl>
 
 #include <fstream>
 
@@ -56,6 +60,8 @@ void PdfTool::init()
     ui->label->setAlignment(Qt::AlignCenter);
     ui->label->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
     ui->actionSetting->setEnabled(false);
+
+    setAcceptDrops(true);
 
     m_watermarkInfo.angle = 45.0;
     m_watermarkInfo.fontSize = 20;
@@ -342,9 +348,8 @@ void PdfTool::save(const QString& filePath)
     }
 }
 
-void PdfTool::slotOpenPDF()
+void PdfTool::openPDF(const QString& filePath)
 {
-    QString filePath = QFileDialog::getOpenFileName(this, tr("Open PDF"), "", "PDF Files (*.pdf)");
     if(filePath.isEmpty()) return;
 
     if(m_doc) FPDF_CloseDocument(m_doc);
@@ -371,6 +376,13 @@ void PdfTool::slotOpenPDF()
     m_currentPageIndex = 0;
     renderPage();
     initThumbnail();
+}
+
+void PdfTool::slotOpenPDF()
+{
+    QString filePath = QFileDialog::getOpenFileName(this, tr("Open PDF"), "", "PDF Files (*.pdf)");
+    if(filePath.isEmpty()) return;
+    openPDF(filePath);
 }
 
 void PdfTool::slotSave()
@@ -473,4 +485,58 @@ void PdfTool::resizeEvent(QResizeEvent* event)
         ui->label->setPixmap(QPixmap::fromImage(m_currentImage)
                                  .scaled(ui->label->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
     }
+}
+
+void PdfTool::dragEnterEvent(QDragEnterEvent* event)
+{
+    if(!event) return;
+    const QMimeData* md = event->mimeData();
+    if(md && md->hasUrls())
+    {
+        QList<QUrl> urls = md->urls();
+        if(!urls.isEmpty())
+        {
+            QUrl url = urls.first();
+            if(url.isLocalFile())
+            {
+                QString local = url.toLocalFile();
+                if(local.endsWith(".pdf", Qt::CaseInsensitive))
+                {
+                    event->acceptProposedAction();
+                    return;
+                }
+            }
+        }
+    }
+    event->ignore();
+}
+
+void PdfTool::dragMoveEvent(QDragMoveEvent* event)
+{
+    dragEnterEvent(reinterpret_cast<QDragEnterEvent*>(event));
+}
+
+void PdfTool::dropEvent(QDropEvent* event)
+{
+    if(!event) return;
+    const QMimeData* md = event->mimeData();
+    if(md && md->hasUrls())
+    {
+        QList<QUrl> urls = md->urls();
+        if(!urls.isEmpty())
+        {
+            QUrl url = urls.first();
+            if(url.isLocalFile())
+            {
+                QString local = url.toLocalFile();
+                if(local.endsWith(".pdf", Qt::CaseInsensitive))
+                {
+                    openPDF(local);
+                    event->acceptProposedAction();
+                    return;
+                }
+            }
+        }
+    }
+    event->ignore();
 }

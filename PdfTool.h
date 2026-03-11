@@ -38,6 +38,8 @@ private:
     bool addWatermark(FPDF_DOCUMENT doc);
     void save(const QString& filePath);
 
+    void openPDF(const QString& filePath);
+
     void slotOpenPDF();
     void slotSave();
     void slotSaveAs();
@@ -49,6 +51,10 @@ private:
 protected:
     void showEvent(QShowEvent* event) override;
     void resizeEvent(QResizeEvent* event) override;
+
+    void dragEnterEvent(QDragEnterEvent* event) override;
+    void dragMoveEvent(QDragMoveEvent* event) override;
+    void dropEvent(QDropEvent* event) override;
 
 private:
     Ui::MainWindow* ui;
