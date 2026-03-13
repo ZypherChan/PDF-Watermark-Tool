@@ -39,6 +39,18 @@
         <source>PDF Watermark Tool</source>
         <translation>PDF水印工具</translation>
     </message>
+    <message>
+        <source>Drop a PDF file here</source>
+        <translation>拖拽 PDF 文件到此处</translation>
+    </message>
+    <message>
+        <source>or open via menu File → Open</source>
+        <translation>或通过菜单「文件 → 打开」选择文件</translation>
+    </message>
+    <message>
+        <source>① Open File  →  ② Set Watermark  →  ③ Export</source>
+        <translation>① 打开文件  →  ② 设置水印  →  ③ 导出</translation>
+    </message>
 </context>
 <context>
     <name>PdfTool</name>
